@@ -32,20 +32,20 @@ Where to make changes → Tests.
 | Subsystem | Page | Main source location |
 |---|---|---|
 | Event bus | [subsystems/event-bus.md](subsystems/event-bus.md) | `sensorhub-core/.../api/event`, `.../impl/event` |
-| Module lifecycle & registry | _not yet written_ | `sensorhub-core/.../api/module`, `.../impl/module` |
-| System registry & data model | _not yet written_ | `sensorhub-core/.../api/system`, `.../api/data`, `.../impl/system` |
-| Databases & datastores (API, federated DB) | _not yet written_ | `sensorhub-core/.../api/database`, `.../api/datastore`, `.../impl/database`, `.../impl/datastore` |
-| Sensor drivers | _not yet written_ | `sensorhub-core/.../api/sensor`, `.../impl/sensor` |
-| Commands / tasking | _not yet written_ | `sensorhub-core/.../api/command`, `.../impl/command` |
-| Processing | _not yet written_ | `sensorhub-core/.../api/processing`, `.../impl/processing` |
-| Security | _not yet written_ | `sensorhub-core/.../api/security`, `.../impl/security` |
-| Comms & network | _not yet written_ | `sensorhub-core/.../api/comm`, `.../impl/comm` |
-| H2 datastore | _not yet written_ | `sensorhub-datastore-h2` |
-| Connected Systems API service | _not yet written_ | `sensorhub-service-consys` |
-| SWE services (SOS / SPS) | _not yet written_ | `sensorhub-service-swe` |
-| Admin web UI | _not yet written_ | `sensorhub-webui-core` |
-| Kryo serialization | _not yet written_ | `sensorhub-utils-kryo` |
-| OGC libraries (overview only) | _not yet written_ | `lib-ogc/*` |
+| Module lifecycle & registry | [subsystems/module-lifecycle.md](subsystems/module-lifecycle.md) | `sensorhub-core/.../api/module`, `.../impl/module` |
+| System registry & data model | [subsystems/system-registry.md](subsystems/system-registry.md) | `sensorhub-core/.../api/system`, `.../api/data`, `.../impl/system` |
+| Databases & datastores (API, federated DB) | [subsystems/databases.md](subsystems/databases.md) | `sensorhub-core/.../api/database`, `.../api/datastore`, `.../impl/database`, `.../impl/datastore` |
+| Sensor drivers | [subsystems/sensor-drivers.md](subsystems/sensor-drivers.md) | `sensorhub-core/.../api/sensor`, `.../impl/sensor` |
+| Commands / tasking | [subsystems/commands.md](subsystems/commands.md) | `sensorhub-core/.../api/command`, `.../impl/command` |
+| Processing | [subsystems/processing.md](subsystems/processing.md) | `sensorhub-core/.../api/processing`, `.../impl/processing` |
+| Security | [subsystems/security.md](subsystems/security.md) | `sensorhub-core/.../api/security`, `.../impl/security` |
+| Comms & network | [subsystems/comms-network.md](subsystems/comms-network.md) | `sensorhub-core/.../api/comm`, `.../impl/comm` |
+| H2 datastore | [subsystems/datastore-h2.md](subsystems/datastore-h2.md) | `sensorhub-datastore-h2` |
+| Connected Systems API service | [subsystems/service-consys.md](subsystems/service-consys.md) | `sensorhub-service-consys` |
+| SWE services (SOS / SPS) | [subsystems/service-swe.md](subsystems/service-swe.md) | `sensorhub-service-swe` |
+| Admin web UI | [subsystems/webui.md](subsystems/webui.md) | `sensorhub-webui-core` |
+| Kryo serialization | [subsystems/kryo-serialization.md](subsystems/kryo-serialization.md) | `sensorhub-utils-kryo` |
+| OGC libraries (overview only) | [subsystems/lib-ogc.md](subsystems/lib-ogc.md) | `lib-ogc/*` |
 
 ## Entry points
 
