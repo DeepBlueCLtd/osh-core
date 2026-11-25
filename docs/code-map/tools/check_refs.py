@@ -98,7 +98,7 @@ def check():
                 start = int(m.group(1))
                 end = int(m.group(2) or start)
                 with open(full, encoding="utf-8", errors="replace") as src:
-                    src_lines = src.read().splitlines()
+                    src_lines = src.read().split("\n")  # match grep -n: lone CR is not a line break
                 if end > len(src_lines):
                     errors.append(f"{where}: {target} beyond end of file ({len(src_lines)} lines)")
                     continue
