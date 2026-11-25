@@ -12,9 +12,9 @@ Browser-based administration UI for the hub, built with Vaadin. Two Gradle proje
 | Project | Directory | Content |
 |---|---|---|
 | `sensorhub-webui-core` | [`sensorhub-webui-core`](../../../sensorhub-webui-core) | Module, servlets, `AdminUI`, panels and forms in `org.sensorhub.ui` (+ `api`, `data`, `filter`, `table` sub-packages) |
-| `sensorhub-webui-widgetset` | [`sensorhub-webui-core/widgetset`](../../../sensorhub-webui-core/widgetset) | Vaadin widgetset `org.sensorhub.ui.SensorHubWidgetSet` and two JavaScript chart components |
+| `sensorhub-webui-widgetset` | [`sensorhub-webui-core/widgetset`](../../../sensorhub-webui-core/widgetset) | Vaadin widgetset org.sensorhub.ui.SensorHubWidgetSet (GWT module) and two JavaScript chart components |
 
-**Vaadin version:** [`build.gradle`](../../../sensorhub-webui-core/build.gradle) sets `ext.vaadinVersion = '8.14.3'` on all projects (a commented line keeps `7.7.12`). Dependencies include `vaadin-compatibility-server`/`-client`; 46 of the main source files import `com.vaadin.v7.*` (compatibility layer: `Table`, `TreeTable`, `FieldGroup`, `Property`, ...). The widgetset inherits `com.vaadin.v7.Vaadin7WidgetSet` ([`SensorHubWidgetSet.gwt.xml`](../../../sensorhub-webui-core/widgetset/src/main/resources/org/sensorhub/ui/SensorHubWidgetSet.gwt.xml)).
+**Vaadin version:** [`build.gradle`](../../../sensorhub-webui-core/build.gradle) sets `ext.vaadinVersion = '8.14.3'` on all projects (a commented line keeps `7.7.12`). Dependencies include `vaadin-compatibility-server`/`-client`; 46 of the main source files import `com.vaadin.v7.*` (compatibility layer: `Table`, `TreeTable`, `FieldGroup`, `Property`, ...). The widgetset inherits com.vaadin.v7.Vaadin7WidgetSet ([`SensorHubWidgetSet.gwt.xml`](../../../sensorhub-webui-core/widgetset/src/main/resources/org/sensorhub/ui/SensorHubWidgetSet.gwt.xml)).
 
 Build tasks in [`widgetset/build.gradle`](../../../sensorhub-webui-core/widgetset/build.gradle): `compileWidgetset` (GWT `WidgetsetCompiler`) and `compileTheme` (`SassCompiler` on `VAADIN/themes/sensorhub/styles.scss`); `processResources` depends on both.
 
@@ -27,7 +27,7 @@ Module registration: [`META-INF/services/org.sensorhub.api.module.IModuleProvide
 | Type | Role |
 |---|---|
 | [`AdminUIModule`](../../../sensorhub-webui-core/src/main/java/org/sensorhub/ui/AdminUIModule.java#L53) | `AbstractHttpServiceModule<AdminUIConfig>`. Deploys servlets; holds the config-class → form/panel class maps; `generatePanel()`, `generateForm()` |
-| [`AdminUIConfig`](../../../sensorhub-webui-core/src/main/java/org/sensorhub/ui/AdminUIConfig.java#L23) | `widgetSet` (default `org.sensorhub.ui.SensorHubWidgetSet`), `bundleRepoUrls`, `customPanels`, `customForms`, `deploymentName`, `enableLandingPage` |
+| [`AdminUIConfig`](../../../sensorhub-webui-core/src/main/java/org/sensorhub/ui/AdminUIConfig.java#L23) | `widgetSet` (default org.sensorhub.ui.SensorHubWidgetSet), `bundleRepoUrls`, `customPanels`, `customForms`, `deploymentName`, `enableLandingPage` |
 | [`CustomUIConfig`](../../../sensorhub-webui-core/src/main/java/org/sensorhub/ui/CustomUIConfig.java#L28) | Pair `configClass` → `uiClass` (both fully-qualified names) |
 | [`AdminUIServlet`](../../../sensorhub-webui-core/src/main/java/org/sensorhub/ui/AdminUIServlet.java#L28) | `VaadinServlet`; sets current user and checks `admin_access` on every request |
 | [`AdminUI`](../../../sensorhub-webui-core/src/main/java/org/sensorhub/ui/AdminUI.java#L108) | The Vaadin `UI`. `@Theme("sensorhub")`, `@Push(value=PushMode.MANUAL, transport=Transport.LONG_POLLING)` ([annotations](../../../sensorhub-webui-core/src/main/java/org/sensorhub/ui/AdminUI.java#L105-L106)) |
@@ -62,7 +62,7 @@ Module registration: [`META-INF/services/org.sensorhub.api.module.IModuleProvide
 | Type | Role |
 |---|---|
 | [`MyBeanItem`](../../../sensorhub-webui-core/src/main/java/org/sensorhub/ui/data/MyBeanItem.java#L46) | Javadoc: "Custom bean item to also generate properties for public fields". Vaadin 7 `Item` over a config object |
-| [`BaseProperty`](../../../sensorhub-webui-core/src/main/java/org/sensorhub/ui/data/BaseProperty.java#L43) | Reads `@DisplayInfo` and its nested annotations from the `java.lang.reflect.Field` |
+| [`BaseProperty`](../../../sensorhub-webui-core/src/main/java/org/sensorhub/ui/data/BaseProperty.java#L32) | Reads `@DisplayInfo` and its nested annotations from the `java.lang.reflect.Field` |
 | `FieldProperty`, `ComplexProperty`, `ContainerProperty`, `MapProperty` | Scalar, nested object, collection, map properties |
 | `MyBeanItemContainer` | Container for collection/map elements |
 
@@ -127,9 +127,9 @@ Annotations (`org.sensorhub.api.config.DisplayInfo` and nested types) and how th
 
 ### Event bus usage
 
-- [`AdminUI.init()`](../../../sensorhub-webui-core/src/main/java/org/sensorhub/ui/AdminUI.java#L292) subscribes to the module event group `ModuleRegistry.EVENT_GROUP_ID` with `consume(this::handleEvent)` (no back-pressure; see [Event bus](event-bus.md#module-events)). The subscription is cancelled in [`detach()`](../../../sensorhub-webui-core/src/main/java/org/sensorhub/ui/AdminUI.java#L1497).
-- [`AdminUI.handleEvent`](../../../sensorhub-webui-core/src/main/java/org/sensorhub/ui/AdminUI.java#L1261) handles `ModuleEvent` types (loaded, unloaded, state/config changed, error) by updating the module `TreeTable` inside `access(...)` followed by `push()` (manual push mode).
-- [`DefaultModulePanel`](../../../sensorhub-webui-core/src/main/java/org/sensorhub/ui/DefaultModulePanel.java#L261-L272) registers itself as a per-object listener on the displayed module in `attach()` and unregisters in `detach()`; [`handleEvent`](../../../sensorhub-webui-core/src/main/java/org/sensorhub/ui/DefaultModulePanel.java#L277) refreshes status/error via `getUI().access(...)` + `push()`.
+- `AdminUI.init()` [subscribes](../../../sensorhub-webui-core/src/main/java/org/sensorhub/ui/AdminUI.java#L292) to the module event group `ModuleRegistry.EVENT_GROUP_ID` with `consume(this::handleEvent)` (no back-pressure; see [Event bus](event-bus.md#module-events)). The subscription is cancelled in [`detach()`](../../../sensorhub-webui-core/src/main/java/org/sensorhub/ui/AdminUI.java#L1497).
+- [`AdminUI.handleEvent`](../../../sensorhub-webui-core/src/main/java/org/sensorhub/ui/AdminUI.java#L1261) handles `ModuleEvent` types `LOADED`, `DELETED`, `CONFIG_CHANGED`, `STATE_CHANGED`, `ERROR` by updating the module `TreeTable` inside `access(...)` followed by `push()` (manual push mode).
+- `DefaultModulePanel` registers itself as a per-object listener on the displayed module in [attach/detach](../../../sensorhub-webui-core/src/main/java/org/sensorhub/ui/DefaultModulePanel.java#L261-L272); [`handleEvent`](../../../sensorhub-webui-core/src/main/java/org/sensorhub/ui/DefaultModulePanel.java#L277) refreshes status/error via `getUI().access(...)` + `push()`.
 - `SWEControlForm` and `DatabaseAdminPanel` create `SystemDatabaseTransactionHandler(eventBus, db)` to send commands and delete systems.
 
 ### Security
